@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { deck, isDeckLoading, hand, deckLoadFailed } from "./store/selectors"
 import TheNavbar from './components/TheNavbar';
+import TheFooter from './components/TheFooter';
 import { hot } from 'react-hot-loader/root';
 import { addCardToHand, fetchDeck, removeCardFromHand } from './store/actions';
 
@@ -43,28 +44,29 @@ function App() {
         title="Demo project"
         logoUrl="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
         homeLink="https://www.google.com"
-      >
-      </TheNavbar>
-      <header>
-        {hasDeckLoadFailed && <h1>An error has occurred.</h1>}
-      </header>
-      <p>
-        {cardsFromHand.map((card) => <img
-          onClick={() => removeCardFromHandToDeck(card)}
-          style={{ width: '10%' }}
-          key={card.code}
-          src={card.image}>
-        </img>)}
-      </p>
-      <hr />
-      <p>
-        {deckOfCards.map((card) => <img
-          onClick={() => addCardFromDeckToHand(card)}
-          style={{ width: '10%' }}
-          key={card.code}
-          src={card.image}>
-        </img>)}
-      </p>
+      />
+      <div>
+        {hasDeckLoadFailed ? <h1>An error has occurred.</h1> : <>
+          <p>
+            {cardsFromHand.map((card) => <img
+              onClick={() => removeCardFromHandToDeck(card)}
+              style={{ width: '10%' }}
+              key={card.code}
+              src={card.image}>
+            </img>)}
+          </p>
+          <hr />
+          <p>
+            {deckOfCards.map((card) => <img
+              onClick={() => addCardFromDeckToHand(card)}
+              style={{ width: '10%' }}
+              key={card.code}
+              src={card.image}>
+            </img>)}
+          </p>
+        </>}
+      </div>
+      <TheFooter text="Copyright 2019 Bizx LLC." />
     </div>
   );
 }
