@@ -1,73 +1,42 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { deck, isDeckLoading, hand, deckLoadFailed } from "./store/selectors"
+import React from 'react';
+import { useSelector, shallowEqual } from "react-redux";
+import styled from 'styled-components';
+import { hot } from 'react-hot-loader/root';
+
+import { isDeckLoading } from "./store/selectors"
 import TheNavbar from './components/TheNavbar';
 import TheFooter from './components/TheFooter';
-import { hot } from 'react-hot-loader/root';
-import { addCardToHand, fetchDeck, removeCardFromHand } from './store/actions';
+import TheContent from './components/TheContent';
+import DemoContent from './views/demo';
+
+const Wrapper = styled.div`
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+`;
 
 function App() {
-  const dispatch = useDispatch();
-  const deckOfCards = useSelector(
-    state => deck(state),
-    shallowEqual
-  );
+  // This would be a general selector for any promises waiting on a request to resolve.
   const hasDeckLoaded = useSelector(
     state => isDeckLoading(state),
     shallowEqual
   );
-  const cardsFromHand = useSelector(
-    state => hand(state),
-    shallowEqual
-  );
-  const hasDeckLoadFailed = useSelector(
-    state => deckLoadFailed(state),
-    shallowEqual
-  );
 
-  const addCardFromDeckToHand = (card) => {
-    dispatch(addCardToHand(card));
-  }
-
-  const removeCardFromHandToDeck = (card) => {
-    dispatch(removeCardFromHand(card));
-  }
-
-  // Use useEffect with empty array to simulate on component mount and fetch cards
-  useEffect(() => {
-    dispatch(fetchDeck());
-  }, [dispatch]);
   return (
-    <div>
+    <Wrapper>
       <TheNavbar
         loading={hasDeckLoaded}
         title="Demo project"
         logoUrl="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
         homeLink="https://www.google.com"
       />
-      <div>
-        {hasDeckLoadFailed ? <h1>An error has occurred.</h1> : <>
-          <p>
-            {cardsFromHand.map((card) => <img
-              onClick={() => removeCardFromHandToDeck(card)}
-              style={{ width: '10%' }}
-              key={card.code}
-              src={card.image}>
-            </img>)}
-          </p>
-          <hr />
-          <p>
-            {deckOfCards.map((card) => <img
-              onClick={() => addCardFromDeckToHand(card)}
-              style={{ width: '10%' }}
-              key={card.code}
-              src={card.image}>
-            </img>)}
-          </p>
-        </>}
-      </div>
+      <TheContent>
+        <DemoContent />
+      </TheContent>
       <TheFooter text="Copyright 2019 Bizx LLC." />
-    </div>
+    </Wrapper>
   );
 }
 
