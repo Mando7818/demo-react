@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { deck, isDeckLoading, hand, deckLoadFailed } from "./store/selectors"
-import BarLoader from "react-spinners/BarLoader";
-import { hot } from 'react-hot-loader/root'
+import TheNavbar from './components/TheNavbar';
+import { hot } from 'react-hot-loader/root';
 import { addCardToHand, fetchDeck, removeCardFromHand } from './store/actions';
-import logo from './logo.svg';
-import './App.css';
 
 function App() {
   const dispatch = useDispatch();
@@ -39,12 +37,15 @@ function App() {
     dispatch(fetchDeck());
   }, [dispatch]);
   return (
-    <div className="App">
-      <BarLoader
-        size={150}
+    <div>
+      <TheNavbar
         loading={hasDeckLoaded}
-      />
-      <header className="App-header">
+        title="Demo project"
+        logoUrl="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+        homeLink="https://www.google.com"
+      >
+      </TheNavbar>
+      <header>
         {hasDeckLoadFailed && <h1>An error has occurred.</h1>}
       </header>
       <p>
